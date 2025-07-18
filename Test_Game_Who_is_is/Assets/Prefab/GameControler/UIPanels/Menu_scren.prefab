@@ -148,6 +148,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Options
       objectReference: {fileID: 0}
+    - target: {fileID: 1335404281132951630, guid: 099dd24ce9761f64e8fbdc920dd628ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5731476903867536274, guid: 099dd24ce9761f64e8fbdc920dd628ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -428,6 +432,10 @@ PrefabInstance:
     - target: {fileID: 1162586324328843071, guid: cbf1a6186d65308429f1e5f3a1d5c26d, type: 3}
       propertyPath: m_Name
       value: Skin
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162586324328843071, guid: cbf1a6186d65308429f1e5f3a1d5c26d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6726324674281761505, guid: cbf1a6186d65308429f1e5f3a1d5c26d, type: 3}
       propertyPath: m_Pivot.x

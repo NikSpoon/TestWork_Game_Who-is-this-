@@ -14,6 +14,7 @@ public abstract class BaseGameState : MonoBehaviour, IStateLogic
     public void Init(GameManager manager)
     {
         Manager = manager;
+   
     }
 
     public abstract void Enter();

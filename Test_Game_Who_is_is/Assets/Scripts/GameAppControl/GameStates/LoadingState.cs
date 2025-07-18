@@ -6,16 +6,14 @@ public class LoadingState : BaseGameState
 {
     private bool _isReady = false;
 
+
     public override bool IsReady => _isReady;
-    private void Awake()
+
+    public override void Enter()
     {
         _isReady = true;
     }
-    public override void Enter()
-    {
-      
-    }
-    
+
     public override void Exit()
     {
        

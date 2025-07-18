@@ -91,11 +91,10 @@ public class GameManager : MonoBehaviour, IAppSystem
 
     private void HandleStateChange(StateChangeData<AppState, AppTriger> data)
     {
-        StartCoroutine(SwitchToStateRoutine(data.NewState, data.OldState));
-        OnStateChange?.Invoke(data);
+        StartCoroutine(SwitchToStateRoutine(data.NewState, data.OldState, data));
     }
 
-    private IEnumerator SwitchToStateRoutine(AppState newState, AppState? oldState)
+    private IEnumerator SwitchToStateRoutine(AppState newState, AppState? oldState, StateChangeData<AppState, AppTriger> data)
     {
         if (_isSwitching)
             yield break;
@@ -104,7 +103,7 @@ public class GameManager : MonoBehaviour, IAppSystem
         _ui.ShowLoading();
 
 
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         if (_sceneMap.TryGetValue(newState, out var sceneName))
         {
@@ -114,20 +113,20 @@ public class GameManager : MonoBehaviour, IAppSystem
                 yield return null;
             }
         }
-        yield return null;
-;
+        yield return new WaitForFixedUpdate();
+        ;
         _states[newState]?.Enter();
         _currentLogic = _states[newState];
 
         while (_currentLogic != null && !_currentLogic.IsReady)
-         
-            yield return null;
+            yield return new WaitForFixedUpdate();
 
         if (oldState.HasValue)
         {
             _states[oldState.Value]?.Exit();
         }
         _ui.HideLoading();
+        OnStateChange?.Invoke(data);
         _isSwitching = false;
     }
 
