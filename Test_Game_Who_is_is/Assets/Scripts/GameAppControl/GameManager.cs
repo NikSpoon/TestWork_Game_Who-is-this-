@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour, IAppSystem
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        GameTrigger.Instance.Init(this);
-       
         InitializeFSM();
         InitializeSceneMap();
         InitializeStates();

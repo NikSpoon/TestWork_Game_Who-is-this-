@@ -26,7 +26,7 @@ public class loader : MonoBehaviour
     }
     public void OnPlay()
     {
-        GameTrigger.Instance.SetTrigger(AppTriger.ToMainMenu);
+       GameManager.Instance.Trigger(AppTriger.ToMainMenu);
     }
     public void OnExit()
     {

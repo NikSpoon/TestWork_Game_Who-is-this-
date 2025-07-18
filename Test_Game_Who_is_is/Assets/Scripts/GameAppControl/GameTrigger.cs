@@ -3,9 +3,6 @@ namespace Assets.Scripts.GameAppControl
 {
     public class GameTrigger
     {
-        private static GameTrigger _instance;
-        public static GameTrigger Instance => _instance ??= new GameTrigger();
-
         private GameManager _gameManager;
 
         public void Init(GameManager manager)
