@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LoadingState : BaseGameState
@@ -6,16 +7,18 @@ public class LoadingState : BaseGameState
     private bool _isReady = false;
 
     public override bool IsReady => _isReady;
+    private void Awake()
+    {
+        _isReady = true;
+    }
     public override void Enter()
     {
-        Debug.Log("Gameplay Enter");
-        SceneManager.LoadScene("GameplayScene");
+      
     }
-
+    
     public override void Exit()
     {
-        Debug.Log("Gameplay Exit");
-        // Выгрузи что надо
+       
     }
 
     public override void AppUpdate()

@@ -1,16 +1,35 @@
+using Assets.Scripts.GameAppControl;
+using System.Collections;
 using UnityEngine;
 
 public class loader : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+
+        QualitySettings.shadows = ShadowQuality.HardOnly;
+        QualitySettings.shadowDistance = 15f;
+        QualitySettings.lodBias = 0.5f;
+
+        Time.fixedDeltaTime = 0.03f; 
+
+        StartCoroutine(UnloadUnusedAssetsRoutine());
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator UnloadUnusedAssetsRoutine()
     {
-        
+        yield return Resources.UnloadUnusedAssets();
+        System.GC.Collect();
+    }
+    public void OnPlay()
+    {
+        GameTrigger.Instance.SetTrigger(AppTriger.ToMainMenu);
+    }
+    public void OnExit()
+    {
+        Application.Quit();
     }
 }

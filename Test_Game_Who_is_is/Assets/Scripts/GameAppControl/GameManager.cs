@@ -1,3 +1,4 @@
+﻿using Assets.Scripts.GameAppControl;
 using FSM;
 using System;
 using System.Collections;
@@ -7,12 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IAppSystem
 {
-    [Header("UI Screens")]
-    [SerializeField] private GameObject _loadingScreen;
-    [SerializeField] private GameObject _mainMenuScreen;
-    [SerializeField] private GameObject _gameplayScreen;
-    [SerializeField] private GameObject _finishScreen;
-    [SerializeField] private GameObject _loadScreen;
+
+    public static GameManager Instance;
+
+    [SerializeField] private UIController _ui;
 
     [SerializeField] private BaseGameState _loading;
     [SerializeField] private BaseGameState _mainMenu;
@@ -21,7 +20,6 @@ public class GameManager : MonoBehaviour, IAppSystem
 
 
     private Dictionary<AppState, BaseGameState> _states;
-    private Dictionary<AppState, GameObject> _uiScreens;
     private Dictionary<AppState, string> _sceneMap;
 
     private StateMashine<AppState, AppTriger> _fsm;
@@ -34,14 +32,21 @@ public class GameManager : MonoBehaviour, IAppSystem
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        GameTrigger.Instance.Init(this);
+       
         InitializeFSM();
-        InitializeUIScreens();
         InitializeSceneMap();
         InitializeStates();
 
-        StartCoroutine(SwitchToStateRoutine(_fsm.CurrentState, null));
     }
 
     private void InitializeFSM()
@@ -56,23 +61,12 @@ public class GameManager : MonoBehaviour, IAppSystem
         _fsm.AddTransition(AppState.Finish, AppTriger.ToMainMenu, AppState.MainMenu);
     }
 
-    private void InitializeUIScreens()
-    {
-        _uiScreens = new Dictionary<AppState, GameObject>()
-    {
-        { AppState.Loading, _loadingScreen },
-        { AppState.MainMenu, _mainMenuScreen },
-        { AppState.Gameplay, _gameplayScreen },
-        { AppState.Finish, _finishScreen }
-    };
-    }
-
     private void InitializeSceneMap()
     {
         _sceneMap = new Dictionary<AppState, string>()
     {
         { AppState.Loading, "LoadingScene" },
-        { AppState.MainMenu, "MainMenuScene" },
+        { AppState.MainMenu, "MenuScene" },
         { AppState.Gameplay, "GameplayScene" },
         { AppState.Finish, "FinishScene" }
     };
@@ -109,16 +103,10 @@ public class GameManager : MonoBehaviour, IAppSystem
             yield break;
 
         _isSwitching = true;
-        _loadScreen.SetActive(true);
+        _ui.ShowLoading();
+
 
         yield return null;
-
-        if (oldState.HasValue)
-        {
-            _states[oldState.Value]?.Exit();
-            if (_uiScreens.TryGetValue(oldState.Value, out var oldUI))
-                oldUI.SetActive(false);
-        }
 
         if (_sceneMap.TryGetValue(newState, out var sceneName))
         {
@@ -129,17 +117,19 @@ public class GameManager : MonoBehaviour, IAppSystem
             }
         }
         yield return null;
-
-        if (_uiScreens.TryGetValue(newState, out var newUI))
-            newUI.SetActive(true);
-
+;
         _states[newState]?.Enter();
         _currentLogic = _states[newState];
 
         while (_currentLogic != null && !_currentLogic.IsReady)
+         
             yield return null;
 
-        _loadScreen.SetActive(false);
+        if (oldState.HasValue)
+        {
+            _states[oldState.Value]?.Exit();
+        }
+        _ui.HideLoading();
         _isSwitching = false;
     }
 
