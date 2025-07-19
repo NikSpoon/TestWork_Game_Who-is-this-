@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.GameAppControl;
+﻿
 using FSM;
 using System;
 using System.Collections;
@@ -16,16 +16,15 @@ public class GameManager : MonoBehaviour, IAppSystem
     [SerializeField] private BaseGameState _loading;
     [SerializeField] private BaseGameState _mainMenu;
     [SerializeField] private BaseGameState _gameplay;
-    [SerializeField] private BaseGameState _finish;
+  
 
-
+    private IAppSystem _appSystem; 
     private Dictionary<AppState, BaseGameState> _states;
     private Dictionary<AppState, string> _sceneMap;
 
-    private StateMashine<AppState, AppTriger> _fsm;
     private IStateLogic _currentLogic;
 
-    public AppState CurrentState => _fsm.CurrentState;
+    public AppState CurrentState => _appSystem.CurrentState;
     public event Action<StateChangeData<AppState, AppTriger>> OnStateChange;
 
     private bool _isSwitching = false;
@@ -41,22 +40,12 @@ public class GameManager : MonoBehaviour, IAppSystem
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        InitializeFSM();
+        _appSystem = new AppSystem();
+
+        _appSystem.OnStateChange += HandleStateChange;
+
         InitializeSceneMap();
         InitializeStates();
-
-    }
-
-    private void InitializeFSM()
-    {
-        _fsm = new StateMashine<AppState, AppTriger>(AppState.Loading);
-        _fsm.OnStateChange += HandleStateChange;
-
-        _fsm.AddTransition(AppState.Loading, AppTriger.ToMainMenu, AppState.MainMenu);
-        _fsm.AddTransition(AppState.MainMenu, AppTriger.ToGameplay, AppState.Gameplay);
-        _fsm.AddTransition(AppState.Gameplay, AppTriger.GameplayToGameplay, AppState.Gameplay);
-        _fsm.AddTransition(AppState.Gameplay, AppTriger.ToFinish, AppState.Finish);
-        _fsm.AddTransition(AppState.Finish, AppTriger.ToMainMenu, AppState.MainMenu);
     }
 
     private void InitializeSceneMap()
@@ -66,7 +55,6 @@ public class GameManager : MonoBehaviour, IAppSystem
         { AppState.Loading, "LoadingScene" },
         { AppState.MainMenu, "MenuScene" },
         { AppState.Gameplay, "GameplayScene" },
-        { AppState.Finish, "FinishScene" }
     };
     }
 
@@ -77,15 +65,16 @@ public class GameManager : MonoBehaviour, IAppSystem
         { AppState.Loading, _loading },
         { AppState.MainMenu, _mainMenu },
         { AppState.Gameplay, _gameplay },
-        { AppState.Finish, _finish }
     };
 
         foreach (var state in _states.Values)
         {
             if (state != null)
+            {
+                state.gameObject.SetActive(true); 
                 state.Init(this);
-            else
-                Debug.LogWarning("One of the BaseGameState references is null.");
+                state.gameObject.SetActive(false); 
+            }
         }
     }
 
@@ -100,43 +89,55 @@ public class GameManager : MonoBehaviour, IAppSystem
             yield break;
 
         _isSwitching = true;
+
+        
         _ui.ShowLoading();
+        yield return new WaitForEndOfFrame();
 
+        if (oldState.HasValue && _states.TryGetValue(oldState.Value, out var oldStateObj))
+        {
+            oldStateObj.Exit();
+            oldStateObj.gameObject.SetActive(false);
+        }
 
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate(); 
 
         if (_sceneMap.TryGetValue(newState, out var sceneName))
         {
-            AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName);
+            var loadOp = SceneManager.LoadSceneAsync(sceneName);
             while (!loadOp.isDone)
-            {
                 yield return null;
-            }
         }
-        yield return new WaitForFixedUpdate();
-        ;
-        _states[newState]?.Enter();
-        _currentLogic = _states[newState];
 
-        while (_currentLogic != null && !_currentLogic.IsReady)
-            yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
 
-        if (oldState.HasValue)
+        if (_states.TryGetValue(newState, out var newStateObj))
         {
-            _states[oldState.Value]?.Exit();
+            newStateObj.gameObject.SetActive(true);
+            newStateObj.Enter();
+            _currentLogic = newStateObj;
         }
+
+       
+        while (_currentLogic != null && !_currentLogic.IsReady)
+            yield return new WaitForEndOfFrame();
+
+       
         _ui.HideLoading();
+
+        Debug.Log($"GameManager: State changed to {newState}");
         OnStateChange?.Invoke(data);
         _isSwitching = false;
     }
 
     private void Update()
     {
-        _currentLogic?.AppUpdate();
+        Debug.Log(CurrentState);
+        _currentLogic?.GameUpdate();
     }
 
     public void Trigger(AppTriger trigger)
     {
-        _fsm.SetTrigger(trigger);
+        _appSystem.Trigger(trigger);
     }
 }

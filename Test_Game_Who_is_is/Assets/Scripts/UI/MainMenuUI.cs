@@ -1,4 +1,4 @@
-using Assets.Scripts.GameAppControl;
+
 using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour

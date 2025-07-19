@@ -14,7 +14,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Transform _root;
 
     private GameObject _currentScreen;
-
+   
     private void Start()
     {
         StartCoroutine(WaitForPlayerDataManager());
@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
         {
             Destroy(_currentScreen);
         }
-
+      
         switch (data.NewState)
         {
             case AppState.MainMenu:
@@ -36,13 +36,10 @@ public class UIController : MonoBehaviour
             case AppState.Gameplay:
                 _currentScreen = Instantiate(_gameplayScreen, _root);
                 break;
-            case AppState.Finish:
-                _currentScreen = Instantiate(_finishScreen, _root);
-                break;
             case AppState.Loading:
                 _currentScreen = Instantiate(_loadingScreen, _root);
                 break;
-            
+
         }
 
     }
@@ -60,12 +57,15 @@ public class UIController : MonoBehaviour
     private IEnumerator WaitForPlayerDataManager()
     {
         while (GameManager.Instance == null)
-        {
             yield return null;
-        }
 
         var appSystem = GameManager.Instance;
         appSystem.OnStateChange += OnStateChange;
+
         DontDestroyOnLoad(gameObject);
+    }
+    private void Update()
+    {
+        Debug.Log("Ui _currentScreen = " + _currentScreen);
     }
 }

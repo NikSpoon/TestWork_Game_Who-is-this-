@@ -3,7 +3,7 @@ public interface IStateLogic
 {
     void Enter();
     void Exit();
-    void AppUpdate();
+    void GameUpdate();
     bool IsReady { get; }
 }
 public abstract class BaseGameState : MonoBehaviour, IStateLogic
@@ -14,12 +14,12 @@ public abstract class BaseGameState : MonoBehaviour, IStateLogic
     public void Init(GameManager manager)
     {
         Manager = manager;
-   
+  
     }
 
     public abstract void Enter();
     public abstract void Exit();
-    public abstract void AppUpdate();
+    public abstract void GameUpdate();
 
 
 }

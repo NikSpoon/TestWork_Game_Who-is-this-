@@ -29,8 +29,6 @@ public class CharacterColorizer : MonoBehaviour
         if (_skinnedMesh == null || _baseMaterial == null) return;
 
         int matsCount = _skinnedMesh.sharedMaterials.Length;
-        Debug.Log($"Materials count: {matsCount}");
-
         Material[] newMats = new Material[matsCount];
 
         for (int i = 0; i < matsCount; i++)

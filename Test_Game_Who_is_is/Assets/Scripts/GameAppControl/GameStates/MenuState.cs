@@ -7,18 +7,19 @@ public class MenuState : BaseGameState
     
 
     public override bool IsReady => _isReady;
-    
+
     public override void Enter()
     {
-        _isReady = true; 
+     
+        _isReady = true;
     }
 
     public override void Exit()
     {
-       
+     
     }
 
-    public override void AppUpdate()
+    public override void GameUpdate()
     {
         // логика игры
     }

@@ -57,10 +57,10 @@ namespace FSM
         public TState NextState { get; }
         public TTrigger Trigger { get; }
 
-        public Transition(TState nextState, TTrigger trigпer)
+        public Transition(TState nextState, TTrigger trigrer)
         {
             NextState = nextState;
-            Trigger = trigпer;
+            Trigger = trigrer;
         }
 
 

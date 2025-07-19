@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: dbef7bab085f80a49822270c97e75377, type: 3}
   m_Name: PlayerColorProfile
   m_EditorClassIdentifier: Assembly-CSharp::CharacterColorProfile
-  Torso: {r: 0.38039216, g: 0.90588236, b: 0.47843137, a: 0}
-  Skin: {r: 0.8352941, g: 0.69411767, b: 0.49411765, a: 0}
-  Legs: {r: 0.27058825, g: 0.4745098, b: 0.78431374, a: 0}
-  Boots: {r: 0.35686275, g: 0.16078432, b: 0.12941177, a: 0}
+  Torso: {r: 0.38410923, g: 0.85660374, b: 0.23112135, a: 0}
+  Skin: {r: 0.6124031, g: 0.645283, b: 0.22280523, a: 0}
+  Legs: {r: 0.17624065, g: 0.37827197, b: 0.8415094, a: 0}
+  Boots: {r: 0.2528302, g: 0.1827056, b: 0.1827056, a: 0}

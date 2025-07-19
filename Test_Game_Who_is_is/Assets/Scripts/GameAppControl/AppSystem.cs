@@ -27,10 +27,8 @@ public class AppSystem : IAppSystem
 
         _stateMashine.AddTransition(AppState.MainMenu, AppTriger.ToGameplay, AppState.Gameplay);
 
-        _stateMashine.AddTransition(AppState.Gameplay, AppTriger.GameplayToGameplay, AppState.Gameplay);
-        _stateMashine.AddTransition(AppState.Gameplay, AppTriger.ToFinish, AppState.Finish);
-
-        _stateMashine.AddTransition(AppState.Finish, AppTriger.ToMainMenu, AppState.MainMenu);
+        _stateMashine.AddTransition(AppState.Gameplay, AppTriger.ToMainMenu, AppState.MainMenu);
+       
 
     }
 
@@ -46,7 +44,7 @@ public enum AppState
     Loading,
     MainMenu,
     Gameplay,
-    Finish
+  
 
 }
 
@@ -54,8 +52,7 @@ public enum AppTriger
 {
     ToMainMenu,
     ToGameplay,
-    GameplayToGameplay,
-    ToFinish
+ 
 }
 
 

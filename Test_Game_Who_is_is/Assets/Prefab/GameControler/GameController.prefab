@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ui: {fileID: 0}
-  _root: {fileID: 0}
   _loading: {fileID: 6331525037876299561, guid: 557914668924e46408ff974374dbfe67, type: 3}
   _mainMenu: {fileID: 5510960392430851357, guid: 6fea95067e015c542ae8f9217b5e1358, type: 3}
   _gameplay: {fileID: 5548285773799045386, guid: faf88017a528d9642aa35149d34864e3, type: 3}
