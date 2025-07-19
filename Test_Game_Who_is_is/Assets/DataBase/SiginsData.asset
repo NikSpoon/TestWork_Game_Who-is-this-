@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4abb236b99190a74485e43f2ef2b4f30, type: 3}
   m_Name: SiginsData
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::SiginsData
   siginPrefabs:
   - {fileID: 2754776231503527078, guid: 34f01b6a980670e41a5cc6148ab5432e, type: 3}
   - {fileID: 8858766468501576294, guid: 6e8d3a0c64b200c4f94e6ef13f1cce9d, type: 3}

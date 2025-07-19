@@ -6,3 +6,4 @@ public class SiginsData : ScriptableObject
 {
     public List<GameObject> siginPrefabs; 
 }
+

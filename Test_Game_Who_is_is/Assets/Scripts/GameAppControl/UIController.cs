@@ -64,8 +64,5 @@ public class UIController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
-    private void Update()
-    {
-        Debug.Log("Ui _currentScreen = " + _currentScreen);
-    }
+  
 }

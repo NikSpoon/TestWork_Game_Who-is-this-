@@ -68,4 +68,17 @@ public class Spawner : MonoBehaviour
             obj.transform.rotation = Quaternion.LookRotation(_banner.position - point.position);
         }
     }
+    public void FullRestart()
+    {
+        foreach (var pair in SpawnPlayers)
+        {
+            if (pair.Key != null)
+                Destroy(pair.Key);
+        }
+
+        SpawnPlayers.Clear();
+
+        SpawnPlayer();
+        SpawnOther(_spawnPoints.Count - 1);
+    }
 }

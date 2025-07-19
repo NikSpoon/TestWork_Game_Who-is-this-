@@ -10,7 +10,9 @@ public class GameInfoUI : MonoBehaviour
 
     [Header("EndPAnel")]
     [SerializeField] private TextMeshProUGUI _finishTeet;
+    [SerializeField] private TextMeshProUGUI _winTeet;
     [SerializeField] private GameObject _finishPanel;
+    [SerializeField] private GameObject _winPanel;
 
     private bool isStartTimer = false;
 
@@ -47,21 +49,22 @@ public class GameInfoUI : MonoBehaviour
         _finishTeet.text = "Thanks for playing! " +
                       "\r\n Come back again soon!";
     }
- 
+    public void EnebleWinPanel(bool t)
+    {
+        _winPanel.SetActive(t);
+
+        _winTeet.text = "You Winnn This !!!! " +
+                      "\r\n Come back again soon!";
+    }
+
     public void OnMenu()
     {
         GameManager.Instance.Trigger(AppTriger.ToMainMenu);
     }
     public void OnRestart()
     {
-        if (_state.IsFinisedGame)
-        {
-            GameManager.Instance.Trigger(AppTriger.ToGameplay);
-        }
-        else if (_state.IsRrspawnSesion)
-        {
-            _state.RrspawnSesion();
-        }
+          GameManager.Instance.Trigger(AppTriger.ToGameplay);
+       
     }
     public void OnPay()
     {

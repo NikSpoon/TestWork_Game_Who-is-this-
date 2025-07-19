@@ -8,11 +8,12 @@ TagManager:
   - BanerCameraRoot
   - GameUI
   - Spawner
+  - MemController
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Gemers
   - Water
   - UI
   - 

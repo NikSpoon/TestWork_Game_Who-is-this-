@@ -125,14 +125,12 @@ public class GameManager : MonoBehaviour, IAppSystem
        
         _ui.HideLoading();
 
-        Debug.Log($"GameManager: State changed to {newState}");
         OnStateChange?.Invoke(data);
         _isSwitching = false;
     }
 
     private void Update()
     {
-        Debug.Log(CurrentState);
         _currentLogic?.GameUpdate();
     }
 
