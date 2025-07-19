@@ -1,14 +1,21 @@
 fileFormatVersion: 2
 guid: 664e6998ef92f4f468a6439ccee9e128
+AssetOrigin:
+  serializedVersion: 1
+  productId: 294200
+  packageName: Low Poly Prototype Character
+  packageVersion: 1.0
+  assetPath: Assets/Advaita Assets/Low Poly Prototype Character/PrototypeCharacter.fbx
+  uploadId: 687039
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -529,10 +534,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 294200
-  packageName: Low Poly Prototype Character
-  packageVersion: 1.0
-  assetPath: Assets/Advaita Assets/Low Poly Prototype Character/PrototypeCharacter.fbx
-  uploadId: 687039
