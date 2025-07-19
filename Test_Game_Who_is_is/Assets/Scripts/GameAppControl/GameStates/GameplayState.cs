@@ -7,7 +7,7 @@ public class GameplayState : BaseGameState
     private bool _isReady = false;
     public override bool IsReady => _isReady;
 
-
+    private Spawner _spawner;
     private Transform _banner;
     private Rigidbody _playerRb;
     private Muvment _playerMuvment;
@@ -16,16 +16,27 @@ public class GameplayState : BaseGameState
     private GameInfoUI _gameplayUIComponent;
 
     private int _startTimer = 5;
-    private int _lookBannerTime = 2;
+    private int _lookBannerTime = 3;
     private int _gameTime = 30;
+
+    private bool _fiinishSession;
+
+    public bool IsFinisedGame { get; protected set; }
+    public bool IsRrspawnSesion { get; protected set; }
 
     public event Action<int, bool> Timer;
     public event Action<int, bool> StartTimer;
 
+    public GameplayState Init(GameplayState gameplayState)
+    {
+        return this;
+    }
     public override void Enter()
     {
         StartCoroutine(InitAll());
-
+        IsFinisedGame = false;
+        IsRrspawnSesion = false;
+        _fiinishSession = false;
     }
 
     public override void Exit()
@@ -38,8 +49,29 @@ public class GameplayState : BaseGameState
     }
     public override void GameUpdate()
     {
+        if (IsRrspawnSesion)
+        {
+            OnFinishSesion();
+        }
     }
 
+    private void OnFinishSesion()
+    {
+        _fiinishSession = false;
+        if (_fiinishSession)
+        {
+            OnFinishGame();
+            return;
+        }
+
+        _gameplayUIComponent.EnebleFinishPanel(true);
+
+    }
+    private void OnFinishGame()
+    {
+        IsFinisedGame = false;
+
+    }
     private IEnumerator InitAll()
     {
 
@@ -86,12 +118,23 @@ public class GameplayState : BaseGameState
         {
             StartTimer += _gameplayUIComponent.OnStartTimer;
             Timer += _gameplayUIComponent.OnTimer;
+            _gameplayUIComponent.SetState(this);
         }
 
 
         yield return null;
 
+        while (_spawner == null)
+        {
+            GameObject spawner = GameObject.FindWithTag("Spawner");
+            if (spawner != null)
+                _spawner = spawner.GetComponent<Spawner>();
+            yield return null;
+        }
 
+        yield return null;
+ 
+        
         StartCoroutine(LookBanner());
     }
 
@@ -132,7 +175,28 @@ public class GameplayState : BaseGameState
             yield return new WaitForSeconds(1);
 
         }
-
+        _fiinishSession = true;
+        IsRrspawnSesion = true;
         Timer?.Invoke(0, false);
     }
+    private IEnumerator RrspawnRotine()
+    {
+
+        IsRrspawnSesion = false;
+        _playerMuvment.enabled = false;
+        _playerRb.isKinematic = true;
+        
+        _gameplayUIComponent.EnebleFinishPanel(false);
+        yield return null;
+        
+        _spawner.Respawn();
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(LookBanner());
+    }
+    public void RrspawnSesion()
+    {
+        StartCoroutine(RrspawnRotine());
+    }
 }
+

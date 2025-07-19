@@ -13,12 +13,15 @@ public class Spawner : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Transform _banner;
 
+    public Dictionary<GameObject,Transform> SpawnPlayers { get; set; } = new Dictionary<GameObject, Transform>();
     private int _playerIndex;
    
     private void Start()
     {
         if (_spawnPoints == null || _spawnPoints.Count == 0 || _banner == null)  return;
         
+        SpawnPlayers.Clear();
+
         SpawnPlayer();
         SpawnOther(_spawnPoints.Count - 1);
     }
@@ -35,10 +38,11 @@ public class Spawner : MonoBehaviour
 
         Quaternion lookRotation = Quaternion.LookRotation(_banner.position - playerSpawnPoint.position);
 
-        Instantiate(_player, playerSpawnPoint.position, lookRotation);
+        var player = Instantiate(_player, playerSpawnPoint.position, lookRotation);
+        SpawnPlayers.Add(player, playerSpawnPoint);
     }
 
-    private void SpawnOther(int enemyCount)
+    public void SpawnOther(int enemyCount)
     {
         int spawned = 0;
         for (int i = 0; i < _spawnPoints.Count; i++)
@@ -50,8 +54,18 @@ public class Spawner : MonoBehaviour
             Transform spawnPoint = _spawnPoints[i];
             Quaternion lookRotation = Quaternion.LookRotation(_banner.position - spawnPoint.position);
 
-            Instantiate(_enemy, spawnPoint.position, lookRotation);
+            var enemy  = Instantiate(_enemy, spawnPoint.position, lookRotation);
             spawned++;
+            SpawnPlayers.Add(enemy,spawnPoint);
+        }
+    }
+
+    public void Respawn()
+    {
+        foreach (var (obj, point) in SpawnPlayers)
+        {
+            obj.transform.position = point.position;
+            obj.transform.rotation = Quaternion.LookRotation(_banner.position - point.position);
         }
     }
 }

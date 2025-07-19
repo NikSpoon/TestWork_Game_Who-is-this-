@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - BanerCameraRoot
+  - GameUI
+  - Spawner
   layers:
   - Default
   - TransparentFX
