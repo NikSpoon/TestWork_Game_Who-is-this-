@@ -8,7 +8,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private GameObject _mainMenuScreen;
     [SerializeField] private GameObject _gameplayScreen;
-    [SerializeField] private GameObject _finishScreen;
     [SerializeField] private GameObject _loadScreen;
 
     [SerializeField] private Transform _root;

@@ -5,8 +5,8 @@ public class CameraFollowControl : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private Vector3 _offset = new Vector3(0, 5, -10);
-    [SerializeField] private float _smoothSpeed = 5f;
-    [SerializeField] private float _rotationSmoothSpeed = 20f;
+    [SerializeField] private float _smoothSpeed = 2f;
+    [SerializeField] private float _rotationSmoothSpeed = 5f;
 
     private Transform _target;
     private Transform _playerTarget;
@@ -44,8 +44,7 @@ public class CameraFollowControl : MonoBehaviour
 
     public void FollowTo(Transform target)
     {
-        _smoothSpeed = 2f;
-        _rotationSmoothSpeed = 5f;
+       
         _target = target;
         _followActive = true;
         _rotateWithTarget = false;
@@ -53,8 +52,7 @@ public class CameraFollowControl : MonoBehaviour
 
     public void FollowToPlayer()
     {
-        _smoothSpeed = 5f;
-        _rotationSmoothSpeed = 20f;
+        
         _target = _playerTarget;
         _followActive = true;
         _rotateWithTarget = true;

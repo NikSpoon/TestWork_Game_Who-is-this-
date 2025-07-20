@@ -13,6 +13,7 @@ public class CharacterColorizer : MonoBehaviour
 
     private void Start()
     {
+        if (gameObject.name == "CollorPanel") return; // TEST ! 
         if (isPlayer)
             ApplyColors(_playerProfile.Torso, _playerProfile.Skin, _playerProfile.Legs, _playerProfile.Boots);
         else
@@ -58,5 +59,14 @@ public class CharacterColorizer : MonoBehaviour
         System.Random random = new System.Random();
         return colors[random.Next(colors.Count)];
        
+    }
+    public void UpdateColorsFromProfile()
+    {
+        if (_skinnedMesh == null)
+        {
+            var player = GameObject.FindGameObjectWithTag("Player");
+            _skinnedMesh = player.GetComponentInChildren<SkinnedMeshRenderer>();
+        }
+        ApplyColors(_playerProfile.Torso, _playerProfile.Skin, _playerProfile.Legs, _playerProfile.Boots);
     }
 }
