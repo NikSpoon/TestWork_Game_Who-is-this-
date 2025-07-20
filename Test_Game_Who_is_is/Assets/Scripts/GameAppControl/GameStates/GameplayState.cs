@@ -50,6 +50,8 @@ public class GameplayState : BaseGameState
         IsFinisedGame = false;
         IsRrspawnSesion = false;
         _fiinishSession = false;
+     
+        MusicManager.Instance.PlayMainTheme2();
     }
 
     public override void Exit()
@@ -222,11 +224,28 @@ public class GameplayState : BaseGameState
             Timer?.Invoke(_gameTime - i, true);
             yield return new WaitForSeconds(1);
         }
-
+        
+        AudioClip memMusic = _memSpawner.GetMusic();
+        if (memMusic != null)
+        {
+            MusicManager.Instance.PlayOneShot(memMusic);
+            yield return new WaitForSeconds(memMusic.length);
+        }
+       
         _fiinishSession = true;
         IsRrspawnSesion = true;
         StartAi = false;
         Timer?.Invoke(0, false);
+       
+        StartCoroutine(WaitForMusicToEnd());
+    }
+    private IEnumerator WaitForMusicToEnd()
+    {
+        while (MusicManager.Instance != null && MusicManager.Instance.IsPlaying())
+        {
+            yield return null;
+        }
+       MusicManager.Instance. PlayMainTheme2();
     }
     private IEnumerator ContinueWithSurvivorsRoutine()
     {

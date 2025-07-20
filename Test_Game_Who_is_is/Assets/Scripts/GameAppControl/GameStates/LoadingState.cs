@@ -11,7 +11,6 @@ public class LoadingState : BaseGameState
 
     public override void Enter()
     {
-        
         _isReady = true;
     }
 
@@ -19,7 +18,6 @@ public class LoadingState : BaseGameState
     {
       
     }
-
     public override void GameUpdate()
     {
       

@@ -10,7 +10,7 @@ public class MenuState : BaseGameState
 
     public override void Enter()
     {
-     
+        MusicManager.Instance.PlayMainTheme1();
         _isReady = true;
     }
 
@@ -21,6 +21,6 @@ public class MenuState : BaseGameState
 
     public override void GameUpdate()
     {
-        // логика игры
+       
     }
 }

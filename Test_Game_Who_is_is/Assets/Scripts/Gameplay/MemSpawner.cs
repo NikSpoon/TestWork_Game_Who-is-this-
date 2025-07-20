@@ -17,7 +17,7 @@ public class MemSpawner : MonoBehaviour
     private GameObject _falseSigin;
 
     private Mem _currentMem;
-
+    private AudioClip _currentMusic;
     public void SpawnMem()
     {
         ClearPrevious();
@@ -26,6 +26,7 @@ public class MemSpawner : MonoBehaviour
             return;
 
         _currentMem = _memData.mems[Random.Range(0, _memData.mems.Count)];
+        _currentMusic = _currentMem.music;
 
         var siginData = _siginsData.siginPrefabs[Random.Range(0, _siginsData.siginPrefabs.Count)];
         _siginPrefab = siginData;
@@ -68,5 +69,10 @@ public class MemSpawner : MonoBehaviour
        
         _truSigin = null;
         _falseSigin = null;
+    }
+
+    public AudioClip GetMusic()
+    {
+        return _currentMusic;
     }
 }
