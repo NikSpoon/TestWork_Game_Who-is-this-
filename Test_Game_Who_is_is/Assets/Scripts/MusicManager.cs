@@ -25,7 +25,10 @@ public class MusicManager : MonoBehaviour
         if (_audioSource == null)
             _audioSource = GetComponent<AudioSource>();
     }
-
+    private void Start()
+    {
+        SetVolume(0.5f);
+    }
     public void PlayMainTheme1()
     {
         PlayLoopingTrack(mainTheme1);
