@@ -9,6 +9,7 @@ TagManager:
   - GameUI
   - Spawner
   - MemController
+  - Zone
   layers:
   - Default
   - TransparentFX

@@ -11,18 +11,18 @@ public class LoadingState : BaseGameState
 
     public override void Enter()
     {
-        gameObject.SetActive(true);
+        
         _isReady = true;
     }
 
     public override void Exit()
     {
-        gameObject.SetActive(false);
+      
     }
 
     public override void GameUpdate()
     {
-        gameObject.SetActive(true);
+      
     }
 }
 

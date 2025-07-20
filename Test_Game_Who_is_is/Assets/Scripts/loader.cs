@@ -15,15 +15,9 @@ public class loader : MonoBehaviour
 
         Time.fixedDeltaTime = 0.03f; 
 
-        StartCoroutine(UnloadUnusedAssetsRoutine());
-
+        OnPlay();
     }
 
-    private IEnumerator UnloadUnusedAssetsRoutine()
-    {
-        yield return Resources.UnloadUnusedAssets();
-        System.GC.Collect();
-    }
     public void OnPlay()
     {
        GameManager.Instance.Trigger(AppTriger.ToMainMenu);

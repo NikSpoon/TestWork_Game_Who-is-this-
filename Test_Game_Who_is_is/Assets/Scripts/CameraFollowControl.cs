@@ -34,6 +34,9 @@ public class CameraFollowControl : MonoBehaviour
         }
         else if (_followActive && _target != null)
         {
+            Quaternion lookRotation = Quaternion.LookRotation(_target.position - transform.position);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, _rotationSmoothSpeed * Time.fixedDeltaTime);
+
             Vector3 desiredPosition = _target.position + _offset;
             transform.position = Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed * Time.fixedDeltaTime);
         }

@@ -28,10 +28,17 @@ public class GameplayState : BaseGameState
 
     public bool IsFinisedGame { get; protected set; }
     public bool IsRrspawnSesion { get; protected set; }
+    public bool StartAi { get; private set; }
+
+
 
     public event Action<int, bool> Timer;
     public event Action<int, bool> StartTimer;
 
+    private void Awake()
+    {
+        StartAi = false;
+    }
     public GameplayState Init(GameplayState gameplayState)
     {
         return this;
@@ -39,6 +46,7 @@ public class GameplayState : BaseGameState
     public override void Enter()
     {
         StartCoroutine(InitAll());
+
         IsFinisedGame = false;
         IsRrspawnSesion = false;
         _fiinishSession = false;
@@ -61,6 +69,7 @@ public class GameplayState : BaseGameState
 
             if (!playerWonRound)
             {
+                StartAi = false;
                 OnFinishGame(); 
             }
             else
@@ -204,6 +213,8 @@ public class GameplayState : BaseGameState
 
     private IEnumerator StartGame()
     {
+       
+        StartAi = true;
         Timer?.Invoke(_gameTime, true);
 
         for (int i = 0; i < _gameTime; i++)
@@ -214,35 +225,8 @@ public class GameplayState : BaseGameState
 
         _fiinishSession = true;
         IsRrspawnSesion = true;
+        StartAi = false;
         Timer?.Invoke(0, false);
-    }
-    private IEnumerator RestartFullRoutine()
-    {
-        IsRrspawnSesion = false;
-        _playerMuvment.enabled = false;
-        _playerRb.isKinematic = true;
-
-        _gameplayUIComponent.EnebleFinishPanel(false);
-        yield return null;
-
-        _spawner.FullRestart();
-        _memSpawner.SpawnMem();
-        yield return new WaitForSeconds(1);
-
-        while (_player == null || _playerMuvment == null || _playerRb == null)
-        {
-            _player = GameObject.FindWithTag("Player");
-            if (_player != null)
-            {
-                _playerRb = _player.GetComponent<Rigidbody>();
-                _playerMuvment = _player.GetComponent<Muvment>();
-            }
-            yield return null;
-        }
-
-        _memController.InitParticipants(new List<GameObject>(_spawner.SpawnPlayers.Keys));
-
-        StartCoroutine(LookBanner());
     }
     private IEnumerator ContinueWithSurvivorsRoutine()
     {
@@ -252,7 +236,8 @@ public class GameplayState : BaseGameState
 
         _gameplayUIComponent.EnebleFinishPanel(false);
         yield return null;
-
+        
+        _memSpawner.ClearPrevious();
         _spawner.Respawn();
         _memSpawner.SpawnMem();
         yield return new WaitForSeconds(1);
@@ -261,14 +246,9 @@ public class GameplayState : BaseGameState
 
         StartCoroutine(LookBanner());
     }
-    public void RrspawnSesion()
-    {
-        _gameplayUIComponent.EnebleWinPanel(false);
-        _gameplayUIComponent.EnebleFinishPanel(false);
-        StartCoroutine(RestartFullRoutine());
-    }
     public void ContinueSesion()
     {
+        StartAi = false;
         _memController.DisableLosers();
 
         List<GameObject> toRemove = new List<GameObject>();
