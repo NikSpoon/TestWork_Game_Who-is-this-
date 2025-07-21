@@ -1,0 +1,84 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Spawner : MonoBehaviour
+{
+    [Header("Prefabs")]
+    [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _enemy;
+
+    [Header("Spawn Points")]
+    [SerializeField] private List<Transform> _spawnPoints;
+
+    [Header("Other")]
+    [SerializeField] private Transform _banner;
+
+    public Dictionary<GameObject,Transform> SpawnPlayers { get; set; } = new Dictionary<GameObject, Transform>();
+    private int _playerIndex;
+   
+    private void Start()
+    {
+        if (_spawnPoints == null || _spawnPoints.Count == 0 || _banner == null)  return;
+        
+        SpawnPlayers.Clear();
+
+        SpawnPlayer();
+        SpawnOther(_spawnPoints.Count - 1);
+    }
+
+    private void SpawnPlayer()
+    {
+        if (_spawnPoints.Count == 0) return;
+      
+        System.Random random = new System.Random(); 
+        int playerIndex = random.Next(0, _spawnPoints.Count);
+
+        Transform playerSpawnPoint = _spawnPoints[playerIndex];
+        _playerIndex = playerIndex;
+
+        Quaternion lookRotation = Quaternion.LookRotation(_banner.position - playerSpawnPoint.position);
+
+        var player = Instantiate(_player, playerSpawnPoint.position, lookRotation);
+        SpawnPlayers.Add(player, playerSpawnPoint);
+    }
+
+    public void SpawnOther(int enemyCount)
+    {
+        int spawned = 0;
+        for (int i = 0; i < _spawnPoints.Count; i++)
+        {
+            if (i == _playerIndex)  continue;
+
+            if (spawned >= enemyCount) break;
+
+            Transform spawnPoint = _spawnPoints[i];
+            Quaternion lookRotation = Quaternion.LookRotation(_banner.position - spawnPoint.position);
+
+            var enemy  = Instantiate(_enemy, spawnPoint.position, lookRotation);
+            spawned++;
+            SpawnPlayers.Add(enemy,spawnPoint);
+        }
+    }
+
+    public void Respawn()
+    {
+        foreach (var (obj, point) in SpawnPlayers)
+        {
+            obj.transform.position = point.position;
+            obj.transform.rotation = Quaternion.LookRotation(_banner.position - point.position);
+        }
+    }
+    public void FullRestart()
+    {
+        foreach (var pair in SpawnPlayers)
+        {
+            if (pair.Key != null)
+                Destroy(pair.Key);
+        }
+
+        SpawnPlayers.Clear();
+
+        SpawnPlayer();
+        SpawnOther(_spawnPoints.Count - 1);
+    }
+}
