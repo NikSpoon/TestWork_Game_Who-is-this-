@@ -28,6 +28,21 @@ public class SettingsUI : MonoBehaviour
     {
         QualitySettings.SetQualityLevel(level, true);
         PlayerPrefs.SetInt("QualityLevel", level);
+        switch (level)
+        {
+            case 0: 
+                QualitySettings.shadows = ShadowQuality.Disable;
+                break;
+            case 2: 
+                QualitySettings.shadows = ShadowQuality.HardOnly;
+                break;
+            case 5:
+                QualitySettings.shadows = ShadowQuality.All;
+                break;
+            default:
+                QualitySettings.shadows = ShadowQuality.All;
+                break;
+        }
     }
 
     private void SetMusicVolume(float volume)
