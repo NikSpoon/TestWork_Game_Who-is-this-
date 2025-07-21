@@ -33,7 +33,7 @@ public class GameInfoUI : MonoBehaviour
     public void OnTimer(int timeLeft, bool running)
     {
         isGameTimer = running;
-        _gameTimer.text = $"Start after - {timeLeft}";
+        _gameTimer.text = $"Finish after - {timeLeft}";
     }
     private void Update()
     {

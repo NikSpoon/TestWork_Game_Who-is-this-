@@ -228,6 +228,8 @@ public class GameplayState : BaseGameState
         AudioClip memMusic = _memSpawner.GetMusic();
         if (memMusic != null)
         {
+            Timer?.Invoke(0, false);
+            _followControl?.FollowTo(_banner);
             MusicManager.Instance.PlayOneShot(memMusic);
             yield return new WaitForSeconds(memMusic.length);
         }
